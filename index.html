@@ -3,30 +3,28 @@
     <head>
         <title>Flash Cards</title>
         <!-- We've provided some styles for you, aren't we nice? -->
-        <link rel="stylesheet" type="text/css" href="reset.css" />
-        <link rel="stylesheet" type="text/css" href="style.css" />
+        <link rel="stylesheet" type="text/css" href="css/reset.css" />
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
     </head>
-    <body ng-app="flashCards" ng-controller="MainController">
-    	<div
-    		ng-repeat="flashCard in flashCards | orderBy : 'question'"
-    		class="flash-card">
-    	    <h1>{{ flashCard.question | uppercase }}</h1>
-    	    <ul class="flash-card-answers">
-    	    	<li
-    	    		ng-repeat="answer in flashCard.answers"
-    	    		class="flash-card-answer"
-    	    		ng-click="answerQuestion(answer, flashCard)">{{ answer.text }}</li>
-    	    </ul>
-    	    <h2
-    	    	class="answer-feedback"
-    	    	ng-class="flashCard.answeredCorrectly ? 'correct' : 'incorrect'"
-    	    	ng-show="flashCard.answered">
-    	        <span ng-show="flashCard.answeredCorrectly">Yeah, you got it right!</span>
-    	        <span ng-show="!flashCard.answeredCorrectly">Nope, you got it wrong.</span>
-    	    </h2>
-    	</div>
-    	<script src="angular.js"></script>
-    	<script src="app.js"></script>
-    	<script src="main.controller.js"></script>
+    <body ng-app="FlashCards">
+        <div ng-include src="'statistics.html'"></div>
+        <div ng-controller="MainController">
+            <button class="category-button" ng-repeat="category in categories" ng-click="getCategoryCards(category)" ng-class="{active: category===currentCategory}">{{ category }}</button>
+        	<div ng-repeat="flashCard in flashCards | orderBy : 'question'" ng-hide="loading"
+        		class="flash-card" border-on-hover>
+                <flash-card card="flashCard"></flash-card>
+        	</div>
+            <loader ng-show="loading"></loader>
+        </div>
+    	<script src="lib/angular.js"></script>
+    	<script src="js/app.js"></script>
+    	<script src="js/controllers/MainController.js"></script>
+        <script src="js/controllers/StatsController.js"></script>
+        <script src="js/factories/FlashCardsFactory.js"></script>
+        <script src="js/factories/ScoreFactory.js"></script>
+        <script src="js/filters/cheat.js"></script>
+        <script src="js/directives/loader/loader.js"></script>
+        <script src="js/directives/flashCard/flashCard.js"></script>
+        <script src="js/directives/borderOnHover/borderOnHover.js"></script>
     </body>
 </html>
